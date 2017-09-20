@@ -24,6 +24,7 @@ $(document).ready(function () {
                 async: false,
                 success: function (result) {
                     validaPessoa = new Boolean(result);
+                    return validaPessoa;
                 }
             });
     }
@@ -49,13 +50,7 @@ $(document).ready(function () {
                 
                 validar(id.val());
 
-                if (validaPessoa == false) {
-                    $.getJSON("http://localhost:8090/TrojanWebService/webservice/serviceemprestimo/validaobjeto/" + id.val(), function (validacao) {
-                        validaPessoa = new Boolean(validacao);
-                    });
-                }
-
-                if (validaPessoa) {
+                if (validaPessoa == true) {
                     //Consulta o webservice serviceobjeto
                     $.getJSON("http://localhost:8090/TrojanWebService/webservice/serviceemprestimo/objeto/" + id.val(), function (dados) {
 
@@ -66,7 +61,7 @@ $(document).ready(function () {
                             $("#titulo").val(dados.titulo);
                             $("#tipo").val(dados.tipo);
 
-                            if (dados.estado == true) {
+                            if (dados.estado == true && dados.titulo != null) {
                                 $("#estado").val("EMPRESTADO");
                             } else {
                                 $("#estado").val("DISPONÍVEL");
@@ -77,14 +72,13 @@ $(document).ready(function () {
                         } else {
                             //objeto pesquisado não foi encontrado.
                             limpa_formulario_objeto();
-                            alert("objeto não encontrado.");
                         }
 
                         //
                     });
                     validaPessoa = new Boolean(false);
                 } else {
-                    alert("objeto não encontrado.");
+
                     $("#titulo").val("objeto não encontrado");
                     $("#tipo").val("objeto não encontrado");
                     $("#estado").val("objeto não encontrado");

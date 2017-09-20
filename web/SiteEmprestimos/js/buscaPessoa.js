@@ -23,6 +23,7 @@ $(document).ready(function () {
                 async: false,
                 success: function (result) {
                     validaPessoa = new Boolean(result);
+                    return validaPessoa;
                 }
             });
     }
@@ -48,11 +49,9 @@ $(document).ready(function () {
                 $("#nome").val("...");
                 $("#contato").val("...");
 
-
-
                 validar(id.val());
 
-                if (validaPessoa.valueOf()) {
+                if (validaPessoa == true ){
                     //Consulta o webservice servicepessoa
                     $.getJSON("http://localhost:8090/TrojanWebService/webservice/serviceemprestimo/pessoa/" + id.val(), function (dados) {
 
